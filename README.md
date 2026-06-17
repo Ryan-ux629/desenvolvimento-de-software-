@@ -2,7 +2,7 @@
 
 ## Descrição
 
-O FitLife é um sistema web desenvolvido para auxiliar o gerenciamento de academias, permitindo o controle de alunos, planos, contratos, cobranças, professores, modalidades, turmas e avaliações físicas. O sistema foi desenvolvido como projeto da disciplina Laboratório de Desenvolvimento de Software, utilizando Python, Django, MySQL e HTMOL.
+O FitLife é um sistema web desenvolvido para auxiliar o gerenciamento de academias, permitindo o controle de alunos, planos, contratos, cobranças, professores, modalidades, turmas e avaliações físicas. O sistema foi desenvolvido como projeto da disciplina Laboratório de Desenvolvimento de Software, utilizando Python, Django, HTML e Trello.
 
 ## Problema Resolvido
 
@@ -12,10 +12,7 @@ Muitas academias realizam o controle de alunos, pagamentos e turmas de forma man
 
 - Python 
 - Django
-- MySQL
 - HTML
-- CSS3
-- Git
 - GitHub
 - Trello
 
@@ -39,15 +36,6 @@ Muitas academias realizam o controle de alunos, pagamentos e turmas de forma man
 - Consulta de alunos
 - Atualização cadastral
 
-### Gestão de Planos
-- Cadastro de planos
-- Consulta de planos
-
-### Gestão de Contratos
-- Criação de contratos
-- Renovação de contratos
-- Cancelamento de contratos
-
 ### Gestão Financeira
 - Controle de cobranças
 - Controle de faturas
@@ -56,10 +44,6 @@ Muitas academias realizam o controle de alunos, pagamentos e turmas de forma man
 - Cadastro de modalidades
 - Gerenciamento de turmas
 - Inscrição de alunos
-
-### Avaliação Física
-- Registro de avaliações
-- Histórico de evolução física
 
 ## Instruções de Instalação
 
