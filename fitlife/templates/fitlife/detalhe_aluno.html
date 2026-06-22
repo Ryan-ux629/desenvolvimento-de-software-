@@ -1,0 +1,39 @@
+<h1>Detalhes do Aluno</h1>
+
+<h2>{{ aluno.nome_aluno }}</h2>
+
+<p>
+    <strong>CPF:</strong>
+    {{ aluno.cpf }}
+</p>
+
+<p>
+    <strong>Data de Nascimento:</strong>
+    {{ aluno.data_nascimento }}
+</p>
+
+<p>
+    <strong>Endereço:</strong>
+    {{ aluno.endereco_aluno }}
+</p>
+
+<p>
+    <strong>Telefone:</strong>
+    {{ aluno.telefone_aluno }}
+</p>
+
+<p>
+    <strong>E-mail:</strong>
+    {{ aluno.e_mail }}
+</p>
+
+{% if aluno.restricoes %}
+<p>
+    <strong>Restrições Médicas:</strong>
+    {{ aluno.restricoes }}
+</p>
+{% endif %}
+
+<a href="{% url 'editar_aluno' aluno.cpf %}">Editar</a>
+<a href="{% url 'excluir_aluno' aluno.cpf %}">Excluir</a>
+<a href="{% url 'listar_alunos' %}">Voltar</a>
