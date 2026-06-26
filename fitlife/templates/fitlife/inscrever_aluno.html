@@ -1,0 +1,67 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Inscrever Aluno — FitLife{% endblock %}
+{% block topbar_title %}Inscrever Aluno{% endblock %}
+{% block nav_turmas %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Inscrever Aluno</h1>
+    <a href="{% url 'detalhe_turma' turma.cod_turma %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<!-- Mensagem de erro (aluno já inscrito) -->
+{% if erro %}
+<div style="background: #ffebee; border-left: 3px solid #c62828; border-radius: 0 8px 8px 0; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 13px; color: #c62828;">
+    <i class="ti ti-alert-circle" style="vertical-align: -2px;"></i> {{ erro }}
+</div>
+{% endif %}
+
+<div class="card" style="max-width: 640px;">
+
+    <!-- Info da turma -->
+    <div style="background: #f9f9fb; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 13px; color: #555; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+        <div><strong>Turma:</strong> #{{ turma.cod_turma }}</div>
+        <div><strong>Modalidade:</strong> {{ turma.cod_modalidade.nome_mod }}</div>
+        <div><strong>Professor:</strong> {{ turma.cref_professor.nome_prof }}</div>
+        <div><strong>Vagas:</strong>
+            <span style="color: {% if turma.esta_lotada %}#c62828{% else %}#2e7d32{% endif %}; font-weight: 600;">
+                {{ turma.inscricoes.count }}/{{ turma.capacidade }}
+            </span>
+        </div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Aluno -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="cpf_aluno" style="font-size: 13px; font-weight: 500; color: #1a1a2e; display: block; margin-bottom: 5px;">
+                Aluno <span style="color: #e94560;">*</span>
+            </label>
+            <select id="cpf_aluno" name="cpf_aluno" required
+                style="width: 100%; padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 13.5px; outline: none; background: #fff;">
+                <option value="">Selecione um aluno...</option>
+                {% for aluno in alunos %}
+                    <option value="{{ aluno.cpf }}">
+                        {{ aluno.nome_aluno }} (CPF: {{ aluno.cpf }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Botões -->
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn-primary">
+                <i class="ti ti-check"></i> Inscrever
+            </button>
+            <a href="{% url 'detalhe_turma' turma.cod_turma %}" class="btn-secondary">Cancelar</a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

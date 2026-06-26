@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FitLife{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background: #f0f0f5;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 200px;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem 1rem;
+            flex-shrink: 0;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-logo span {
+            color: #ffffff;
+        }
+
+        .sidebar-section {
+            font-size: 10px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aaa;
+            font-size: 13.5px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 2px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .sidebar nav a:hover {
+            background: #ffffff12;
+            color: #fff;
+        }
+
+        .sidebar nav a.active {
+            background: #e94560;
+            color: #fff;
+        }
+
+        .sidebar nav a i {
+            font-size: 17px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 0.5px solid #ffffff18;
+            padding-top: 1rem;
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #777;
+            font-size: 13px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar-footer a:hover {
+            background: #ffffff12;
+            color: #fff;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            margin-left: 200px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 0.5px solid #e0e0e0;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .topbar-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a2e;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .topbar-user .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fce4ec;
+            color: #e94560;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        /* ── COMPONENTES REUTILIZÁVEIS ── */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .btn-primary {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: #c73652;
+        }
+
+        .btn-secondary {
+            background: #f0f0f5;
+            color: #1a1a2e;
+            border: 0.5px solid #ddd;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e8;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-edit:hover { background: #bbdefb; }
+
+        .btn-danger {
+            background: #fce4ec;
+            color: #c62828;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-danger:hover { background: #ffcdd2; }
+
+        .card {
+            background: #fff;
+            border: 0.5px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+        }
+
+        .filter-bar {
+            background: #fff;
+            border: 0.5px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            padding: 6px 11px;
+            border: 0.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 13px;
+            outline: none;
+            background: #fff;
+        }
+
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: #e94560;
+        }
+
+        .filter-bar input { flex: 1; min-width: 160px; }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .badge-warning { background: #fff3e0; color: #e65100; }
+        .badge-success { background: #e8f5e9; color: #2e7d32; }
+        .badge-danger  { background: #ffebee; color: #c62828; }
+        .badge-info    { background: #e3f2fd; color: #1565c0; }
+
+        .messages {
+            margin-bottom: 1rem;
+        }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .alert-success { background: #e8f5e9; color: #2e7d32; border-left: 3px solid #2e7d32; }
+        .alert-error   { background: #ffebee; color: #c62828; border-left: 3px solid #c62828; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+        <div class="sidebar-logo">Fit<span>Life</span></div>
+    </a>
+
+    <div class="sidebar-section">Principal</div>
+    <nav>
+        <a href="{% url 'listar_alunos' %}" class="{% block nav_alunos %}{% endblock %}">
+            <i class="ti ti-users"></i> Alunos
+        </a>
+        <a href="{% url 'listar_turmas' %}" class="{% block nav_inscricoes %}{% endblock %}">
+            <i class="ti ti-clipboard-list"></i> Inscrições
+        </a>
+        <a href="{% url 'listar_pagamentos' %}" class="{% block nav_pagamentos %}{% endblock %}">
+            <i class="ti ti-cash"></i> Pagamentos
+        </a>
+    </nav>
+
+    <div class="sidebar-section">Academia</div>
+    <nav>
+        <a href="{% url 'listar_turmas' %}" class="{% block nav_turmas %}{% endblock %}">
+            <i class="ti ti-calendar-event"></i> Turmas
+        </a>
+        <a href="{% url 'listar_professores' %}" class="{% block nav_professores %}{% endblock %}">
+            <i class="ti ti-school"></i> Professores
+        </a>
+        <a href="{% url 'listar_unidades' %}" class="{% block nav_unidades %}{% endblock %}">
+            <i class="ti ti-building"></i> Unidades
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="{% url 'admin:index' %}">
+            <i class="ti ti-settings"></i> Admin
+        </a>
+        <a href="{% url 'logout' %}">
+            <i class="ti ti-logout"></i> Sair
+        </a>
+    </div>
+</aside>
+
+<!-- CONTEÚDO -->
+<div class="main">
+    <div class="topbar">
+        <span class="topbar-title">{% block topbar_title %}FitLife{% endblock %}</span>
+        <div class="topbar-user">
+            <div class="avatar">{{ request.user.username|first|upper }}</div>
+            {{ request.user.username }}
+        </div>
+    </div>
+
+    <div class="content">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

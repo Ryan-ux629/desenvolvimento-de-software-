@@ -1,0 +1,97 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Pagamento #{{ pagamento.cod_pagamento }} — FitLife{% endblock %}
+{% block topbar_title %}Detalhes do Pagamento{% endblock %}
+{% block nav_pagamentos %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Detalhes do Pagamento</h1>
+    <a href="{% url 'listar_pagamentos' %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="card" style="max-width: 640px;">
+
+    <!-- Cabeçalho -->
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid #f0f0f0;">
+        <div style="
+            width: 56px; height: 56px; border-radius: 50%;
+            background: #fce4ec; color: #e94560;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; flex-shrink: 0;
+        ">
+            <i class="ti ti-cash"></i>
+        </div>
+        <div>
+            <div style="font-size: 18px; font-weight: 600; color: #1a1a2e;">
+                Pagamento #{{ pagamento.cod_pagamento }}
+            </div>
+            <div style="font-size: 12px; color: #999; margin-top: 2px;">
+                {{ pagamento.num_contrato.cpf_aluno.nome_aluno }} — Contrato #{{ pagamento.num_contrato.num_contrato }}
+            </div>
+        </div>
+        <!-- Badge de status -->
+        <div style="margin-left: auto;">
+            {% if pagamento.status_pag == 'Pago' %}
+                <span class="badge badge-success"><i class="ti ti-check"></i> Pago</span>
+            {% elif pagamento.status_pag == 'Pendente' %}
+                <span class="badge badge-info"><i class="ti ti-clock"></i> Pendente</span>
+            {% elif pagamento.status_pag == 'Atrasado' %}
+                <span class="badge badge-danger"><i class="ti ti-alert-circle"></i> Atrasado</span>
+            {% elif pagamento.status_pag == 'Cancelado' %}
+                <span class="badge" style="background:#f5f5f5; color:#999;"><i class="ti ti-x"></i> Cancelado</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Dados em grade -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+
+        <div>
+            <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Valor</div>
+            <div style="font-size: 14px; color: #1a1a2e; font-weight: 600;">R$ {{ pagamento.valor }}</div>
+        </div>
+
+        <div>
+            <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Vencimento</div>
+            <div style="font-size: 14px; color: #1a1a2e;">{{ pagamento.vencimento }}</div>
+        </div>
+
+        <div>
+            <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Forma de Pagamento</div>
+            <div style="font-size: 14px; color: #1a1a2e;">{{ pagamento.forma_pagamento }}</div>
+        </div>
+
+        <div>
+            <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Contrato</div>
+            <div style="font-size: 14px; color: #1a1a2e;">#{{ pagamento.num_contrato.num_contrato }}</div>
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+            <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Aluno</div>
+            <div style="font-size: 14px; color: #1a1a2e;">
+                {{ pagamento.num_contrato.cpf_aluno.nome_aluno }}
+                <span style="color: #999; font-size: 12px;">(CPF: {{ pagamento.num_contrato.cpf_aluno.cpf }})</span>
+            </div>
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+            <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Plano</div>
+            <div style="font-size: 14px; color: #1a1a2e;">{{ pagamento.num_contrato.cod_plano.nome_plano }}</div>
+        </div>
+
+    </div>
+
+    <!-- Botões -->
+    <div style="display: flex; gap: 10px; padding-top: 1rem; border-top: 0.5px solid #f0f0f0;">
+        <a href="{% url 'editar_pagamento' pagamento.cod_pagamento %}" class="btn-edit" style="padding: 7px 16px; font-size: 13px;">
+            <i class="ti ti-edit"></i> Editar
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

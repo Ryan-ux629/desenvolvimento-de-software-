@@ -1,0 +1,121 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Dashboard — FitLife{% endblock %}
+{% block topbar_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+</div>
+
+<!-- CARDS DE RESUMO -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #fce4ec; color: #e94560; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-users"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ total_alunos }}</div>
+            <div style="font-size: 12px; color: #999;">Alunos</div>
+        </div>
+    </div>
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #e8f5e9; color: #2e7d32; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-calendar-event"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ total_turmas }}</div>
+            <div style="font-size: 12px; color: #999;">Turmas</div>
+        </div>
+    </div>
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #e3f2fd; color: #1565c0; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-school"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ total_professores }}</div>
+            <div style="font-size: 12px; color: #999;">Professores</div>
+        </div>
+    </div>
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #f3e5f5; color: #6a1b9a; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-building"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ total_unidades }}</div>
+            <div style="font-size: 12px; color: #999;">Unidades</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- SEGUNDA LINHA DE CARDS -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #e3f2fd; color: #1565c0; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-clock"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ pagamentos_pendentes }}</div>
+            <div style="font-size: 12px; color: #999;">Pagamentos Pendentes</div>
+        </div>
+    </div>
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #ffebee; color: #c62828; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-alert-circle"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #c62828;">{{ pagamentos_atrasados }}</div>
+            <div style="font-size: 12px; color: #999;">Pagamentos Atrasados</div>
+        </div>
+    </div>
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #fff3e0; color: #e65100; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-lock"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ turmas_lotadas }}</div>
+            <div style="font-size: 12px; color: #999;">Turmas Lotadas</div>
+        </div>
+    </div>
+
+    <div class="card" style="display: flex; align-items: center; gap: 1rem;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #e8f5e9; color: #2e7d32; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+            <i class="ti ti-clipboard-list"></i>
+        </div>
+        <div>
+            <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">{{ total_inscricoes }}</div>
+            <div style="font-size: 12px; color: #999;">Inscrições Ativas</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ATALHOS RÁPIDOS -->
+<div class="card">
+    <div style="font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 1rem;">Atalhos Rápidos</div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{% url 'cadastrar_aluno' %}" class="btn-primary">
+            <i class="ti ti-user-plus"></i> Novo Aluno
+        </a>
+        <a href="{% url 'criar_turma' %}" class="btn-primary">
+            <i class="ti ti-calendar-plus"></i> Nova Turma
+        </a>
+        <a href="{% url 'criar_pagamento' %}" class="btn-primary">
+            <i class="ti ti-cash"></i> Novo Pagamento
+        </a>
+        <a href="{% url 'listar_pagamentos' %}?status=Atrasado" class="btn-danger" style="padding: 8px 18px; font-size: 13.5px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <i class="ti ti-alert-circle"></i> Ver Atrasados
+        </a>
+    </div>
+</div>
+
+{% endblock %}

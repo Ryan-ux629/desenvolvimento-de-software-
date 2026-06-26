@@ -1,0 +1,97 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Novo Pagamento — FitLife{% endblock %}
+{% block topbar_title %}Novo Pagamento{% endblock %}
+{% block nav_pagamentos %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Novo Pagamento</h1>
+    <a href="{% url 'listar_pagamentos' %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="card" style="max-width: 640px;">
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Contrato -->
+        <div style="margin-bottom: 1rem;">
+            <label for="num_contrato" style="font-size: 13px; font-weight: 500; color: #1a1a2e; display: block; margin-bottom: 5px;">
+                Contrato <span style="color: #e94560;">*</span>
+            </label>
+            <select id="num_contrato" name="num_contrato" required
+                style="width: 100%; padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 13.5px; outline: none; background: #fff;">
+                <option value="">Selecione um contrato...</option>
+                {% for contrato in contratos %}
+                    <option value="{{ contrato.num_contrato }}">
+                        #{{ contrato.num_contrato }} — {{ contrato.cpf_aluno.nome_aluno }} ({{ contrato.status }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Forma de Pagamento + Status -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+                <label for="forma_pagamento" style="font-size: 13px; font-weight: 500; color: #1a1a2e; display: block; margin-bottom: 5px;">
+                    Forma de Pagamento <span style="color: #e94560;">*</span>
+                </label>
+                <select id="forma_pagamento" name="forma_pagamento" required
+                    style="width: 100%; padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 13.5px; outline: none; background: #fff;">
+                    <option value="">Selecione...</option>
+                    <option value="PIX">PIX</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                    <option value="Cartão de Débito">Cartão de Débito</option>
+                    <option value="Boleto">Boleto</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
+            </div>
+            <div>
+                <label for="status_pag" style="font-size: 13px; font-weight: 500; color: #1a1a2e; display: block; margin-bottom: 5px;">
+                    Status <span style="color: #e94560;">*</span>
+                </label>
+                <select id="status_pag" name="status_pag" required
+                    style="width: 100%; padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 13.5px; outline: none; background: #fff;">
+                    <option value="Pendente" selected>Pendente</option>
+                    <option value="Pago">Pago</option>
+                    <option value="Atrasado">Atrasado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Valor + Vencimento -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+                <label for="valor" style="font-size: 13px; font-weight: 500; color: #1a1a2e; display: block; margin-bottom: 5px;">
+                    Valor (R$) <span style="color: #e94560;">*</span>
+                </label>
+                <input type="number" id="valor" name="valor" step="0.01" min="0" required
+                    placeholder="0,00"
+                    style="width: 100%; padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 13.5px; outline: none;">
+            </div>
+            <div>
+                <label for="vencimento" style="font-size: 13px; font-weight: 500; color: #1a1a2e; display: block; margin-bottom: 5px;">
+                    Vencimento <span style="color: #e94560;">*</span>
+                </label>
+                <input type="date" id="vencimento" name="vencimento" required
+                    style="width: 100%; padding: 8px 12px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 13.5px; outline: none;">
+            </div>
+        </div>
+
+        <!-- Botões -->
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn-primary">
+                <i class="ti ti-check"></i> Salvar
+            </button>
+            <a href="{% url 'listar_pagamentos' %}" class="btn-secondary">Cancelar</a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
+```

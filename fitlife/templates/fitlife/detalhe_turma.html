@@ -1,0 +1,152 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Turma #{{ turma.cod_turma }} — FitLife{% endblock %}
+{% block topbar_title %}Detalhes da Turma{% endblock %}
+{% block nav_turmas %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Detalhes da Turma</h1>
+    <a href="{% url 'listar_turmas' %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<!-- Mensagem de erro (turma lotada ou aluno já inscrito) -->
+{% if erro %}
+<div style="background: #ffebee; border-left: 3px solid #c62828; border-radius: 0 8px 8px 0; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 13px; color: #c62828;">
+    <i class="ti ti-alert-circle" style="vertical-align: -2px;"></i> {{ erro }}
+</div>
+{% endif %}
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start;">
+
+    <!-- CARD: Dados da Turma -->
+    <div class="card">
+
+        <!-- Cabeçalho -->
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid #f0f0f0;">
+            <div style="
+                width: 56px; height: 56px; border-radius: 50%;
+                background: #e8f5e9; color: #2e7d32;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 22px; flex-shrink: 0;
+            ">
+                <i class="ti ti-calendar-event"></i>
+            </div>
+            <div>
+                <div style="font-size: 18px; font-weight: 600; color: #1a1a2e;">
+                    Turma #{{ turma.cod_turma }}
+                </div>
+                <div style="font-size: 12px; color: #999; margin-top: 2px;">
+                    {{ turma.cod_modalidade.nome_mod }}
+                </div>
+            </div>
+            <div style="margin-left: auto;">
+                {% if turma.esta_lotada %}
+                    <span class="badge badge-danger"><i class="ti ti-lock"></i> Lotada</span>
+                {% else %}
+                    <span class="badge badge-success"><i class="ti ti-lock-open"></i> {{ turma.vagas_disponiveis }} vaga{{ turma.vagas_disponiveis|pluralize }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Dados em grade -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+
+            <div>
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Modalidade</div>
+                <div style="font-size: 14px; color: #1a1a2e;">{{ turma.cod_modalidade.nome_mod }}</div>
+            </div>
+
+            <div>
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Dificuldade</div>
+                <div style="font-size: 14px; color: #1a1a2e;">
+                    {% if turma.cod_modalidade.dificuldade == 'Iniciante' %}
+                        <span class="badge badge-success">{{ turma.cod_modalidade.dificuldade }}</span>
+                    {% elif turma.cod_modalidade.dificuldade == 'Intermediário' %}
+                        <span class="badge badge-info">{{ turma.cod_modalidade.dificuldade }}</span>
+                    {% else %}
+                        <span class="badge badge-danger">{{ turma.cod_modalidade.dificuldade }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div>
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Duração</div>
+                <div style="font-size: 14px; color: #1a1a2e;">{{ turma.cod_modalidade.duracao }} min</div>
+            </div>
+
+            <div>
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Capacidade</div>
+                <div style="font-size: 14px; color: #1a1a2e;">{{ turma.inscricoes.count }}/{{ turma.capacidade }} alunos</div>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Professor Responsável</div>
+                <div style="font-size: 14px; color: #1a1a2e;">{{ turma.cref_professor.nome_prof }}</div>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <div style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">Unidade</div>
+                <div style="font-size: 14px; color: #1a1a2e;">{{ turma.cod_unidade }}</div>
+            </div>
+
+        </div>
+
+        <!-- Botões -->
+        <div style="display: flex; gap: 10px; padding-top: 1rem; border-top: 0.5px solid #f0f0f0;">
+            <a href="{% url 'editar_turma' turma.cod_turma %}" class="btn-edit" style="padding: 7px 16px; font-size: 13px;">
+                <i class="ti ti-edit"></i> Editar
+            </a>
+        </div>
+
+    </div>
+
+    <!-- CARD: Inscrições -->
+    <div class="card">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid #f0f0f0;">
+            <div style="font-size: 15px; font-weight: 600; color: #1a1a2e;">Alunos Inscritos</div>
+            {% if not turma.esta_lotada %}
+            <a href="{% url 'inscrever_aluno' turma.cod_turma %}" class="btn-primary" style="font-size: 12px; padding: 5px 12px;">
+                <i class="ti ti-plus"></i> Inscrever aluno
+            </a>
+            {% endif %}
+        </div>
+
+        {% for inscricao in inscricoes %}
+        <div style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 0; border-bottom: 0.5px solid #f9f9f9;">
+            <div style="
+                width: 34px; height: 34px; border-radius: 50%;
+                background: #fce4ec; color: #e94560;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 12px; font-weight: 600; flex-shrink: 0;
+            ">
+                {{ inscricao.cpf_aluno.nome_aluno|slice:':1'|upper }}
+            </div>
+            <div style="flex: 1;">
+                <div style="font-size: 13px; font-weight: 500; color: #1a1a2e;">{{ inscricao.cpf_aluno.nome_aluno }}</div>
+                <div style="font-size: 11px; color: #999;">CPF: {{ inscricao.cpf_aluno.cpf }}</div>
+            </div>
+            <form method="post" action="{% url 'cancelar_inscricao' turma.cod_turma inscricao.cpf_aluno.cpf %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger" style="padding: 3px 10px; font-size: 11px;"
+                    onclick="return confirm('Cancelar inscrição de {{ inscricao.cpf_aluno.nome_aluno }}?')">
+                    <i class="ti ti-x"></i> Cancelar
+                </button>
+            </form>
+        </div>
+        {% empty %}
+        <div style="text-align: center; padding: 1.5rem; color: #999; font-size: 13px;">
+            <i class="ti ti-users-off" style="font-size: 30px; display: block; margin-bottom: 0.5rem;"></i>
+            Nenhum aluno inscrito ainda.
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Pagamentos — FitLife{% endblock %}
+{% block topbar_title %}Lista de Pagamentos{% endblock %}
+{% block nav_pagamentos %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Pagamentos</h1>
+    <a href="{% url 'criar_pagamento' %}" class="btn-primary">
+        <i class="ti ti-plus"></i> Novo pagamento
+    </a>
+</div>
+
+<!-- FILTROS -->
+<form method="get">
+    <div class="filter-bar">
+        <input
+            type="text"
+            name="busca"
+            placeholder="Buscar por nome do aluno..."
+            value="{{ busca|default:'' }}"
+        >
+        <select name="status">
+            <option value="" {% if not status %}selected{% endif %}>Todos os status</option>
+            <option value="Pago"      {% if status == 'Pago' %}selected{% endif %}>Pago</option>
+            <option value="Pendente"  {% if status == 'Pendente' %}selected{% endif %}>Pendente</option>
+            <option value="Atrasado"  {% if status == 'Atrasado' %}selected{% endif %}>Atrasado</option>
+            <option value="Cancelado" {% if status == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+        </select>
+        <select name="ordem">
+            <option value="vencimento"      {% if not ordem or ordem == 'vencimento' %}selected{% endif %}>Vencimento ↑</option>
+            <option value="vencimento_desc" {% if ordem == 'vencimento_desc' %}selected{% endif %}>Vencimento ↓</option>
+            <option value="valor_asc"       {% if ordem == 'valor_asc' %}selected{% endif %}>Valor ↑</option>
+            <option value="valor_desc"      {% if ordem == 'valor_desc' %}selected{% endif %}>Valor ↓</option>
+        </select>
+        <button type="submit" class="btn-primary">
+            <i class="ti ti-filter"></i> Aplicar
+        </button>
+        <a href="{% url 'listar_pagamentos' %}" class="btn-secondary">Limpar</a>
+    </div>
+</form>
+
+<!-- CONTAGEM -->
+<p style="font-size: 13px; color: #888; margin-bottom: 0.75rem;">
+    {{ pagamentos.count }} pagamento{{ pagamentos.count|pluralize }} encontrado{{ pagamentos.count|pluralize }}
+</p>
+
+<!-- LISTA -->
+{% for pagamento in pagamentos %}
+<div class="card" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem;">
+
+    <!-- Ícone -->
+    <div style="
+        width: 42px; height: 42px; border-radius: 50%;
+        background: #fce4ec; color: #e94560;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    ">
+        <i class="ti ti-cash"></i>
+    </div>
+
+    <!-- Dados -->
+    <div style="flex: 1;">
+        <div style="font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 3px;">
+            {{ pagamento.num_contrato.cpf_aluno.nome_aluno }}
+        </div>
+        <div style="font-size: 12px; color: #777; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <span><i class="ti ti-file-text" style="vertical-align: -2px;"></i> Contrato #{{ pagamento.num_contrato.num_contrato }}</span>
+            <span><i class="ti ti-credit-card" style="vertical-align: -2px;"></i> {{ pagamento.forma_pagamento }}</span>
+            <span><i class="ti ti-calendar" style="vertical-align: -2px;"></i> Venc.: {{ pagamento.vencimento }}</span>
+            <span><i class="ti ti-currency-real" style="vertical-align: -2px;"></i> R$ {{ pagamento.valor }}</span>
+        </div>
+
+        <!-- Badge de status -->
+        <div style="margin-top: 5px;">
+            {% if pagamento.status_pag == 'Pago' %}
+                <span class="badge badge-success"><i class="ti ti-check"></i> Pago</span>
+            {% elif pagamento.status_pag == 'Pendente' %}
+                <span class="badge badge-info"><i class="ti ti-clock"></i> Pendente</span>
+            {% elif pagamento.status_pag == 'Atrasado' %}
+                <span class="badge badge-danger"><i class="ti ti-alert-circle"></i> Atrasado</span>
+            {% elif pagamento.status_pag == 'Cancelado' %}
+                <span class="badge" style="background:#f5f5f5; color:#999;"><i class="ti ti-x"></i> Cancelado</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Ações -->
+    <div style="display: flex; gap: 6px; flex-shrink: 0;">
+        <a href="{% url 'detalhe_pagamento' pagamento.cod_pagamento %}" class="btn-edit">
+            <i class="ti ti-eye"></i> Ver
+        </a>
+        <a href="{% url 'editar_pagamento' pagamento.cod_pagamento %}" class="btn-edit">
+            <i class="ti ti-edit"></i> Editar
+        </a>
+    </div>
+
+</div>
+{% empty %}
+<div class="card" style="text-align: center; padding: 2.5rem; color: #999;">
+    <i class="ti ti-cash-off" style="font-size: 40px; display: block; margin-bottom: 0.75rem;"></i>
+    Nenhum pagamento encontrado.
+    <br><br>
+    <a href="{% url 'criar_pagamento' %}" class="btn-primary" style="display: inline-flex;">
+        <i class="ti ti-plus"></i> Registrar primeiro pagamento
+    </a>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'fitlife/base.html' %}
+
+{% block title %}Professores — FitLife{% endblock %}
+{% block topbar_title %}Lista de Professores{% endblock %}
+{% block nav_professores %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Professores</h1>
+</div>
+
+<!-- FILTROS -->
+<form method="get">
+    <div class="filter-bar">
+        <input
+            type="text"
+            name="busca"
+            placeholder="Buscar por nome..."
+            value="{{ busca|default:'' }}"
+        >
+        <select name="ordem">
+            <option value="nome_az" {% if not ordem or ordem == 'nome_az' %}selected{% endif %}>Nome A-Z</option>
+            <option value="nome_za" {% if ordem == 'nome_za' %}selected{% endif %}>Nome Z-A</option>
+        </select>
+        <button type="submit" class="btn-primary">
+            <i class="ti ti-filter"></i> Aplicar
+        </button>
+        <a href="{% url 'listar_professores' %}" class="btn-secondary">Limpar</a>
+    </div>
+</form>
+
+<!-- CONTAGEM -->
+<p style="font-size: 13px; color: #888; margin-bottom: 0.75rem;">
+    {{ professores.count }} professor{{ professores.count|pluralize:"es" }} encontrado{{ professores.count|pluralize }}
+</p>
+
+<!-- LISTA -->
+{% for professor in professores %}
+<div class="card" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem;">
+
+    <!-- Avatar -->
+    <div style="
+        width: 42px; height: 42px; border-radius: 50%;
+        background: #e8f5e9; color: #2e7d32;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; font-weight: 600; flex-shrink: 0;
+    ">
+        {{ professor.nome_prof|slice:':1'|upper }}
+    </div>
+
+    <!-- Dados -->
+    <div style="flex: 1;">
+        <div style="font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 3px;">
+            {{ professor.nome_prof }}
+        </div>
+        <div style="font-size: 12px; color: #777; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <span><i class="ti ti-id-badge" style="vertical-align: -2px;"></i> CREF: {{ professor.cref }}</span>
+            <span><i class="ti ti-phone" style="vertical-align: -2px;"></i> {{ professor.telefone }}</span>
+            <span><i class="ti ti-mail" style="vertical-align: -2px;"></i> {{ professor.e_mail }}</span>
+        </div>
+
+        <!-- Badge de vínculo -->
+        <div style="margin-top: 5px;">
+            {% if professor.tipo_vinculo == 'CLT' %}
+                <span class="badge badge-info"><i class="ti ti-briefcase"></i> CLT</span>
+            {% elif professor.tipo_vinculo == 'PJ' %}
+                <span class="badge badge-warning"><i class="ti ti-building"></i> PJ</span>
+            {% else %}
+                <span class="badge" style="background:#f5f5f5; color:#999;">Sem vínculo</span>
+            {% endif %}
+
+            {% if professor.cref_supervisor %}
+                <span class="badge badge-success" style="margin-left: 4px;">
+                    <i class="ti ti-user-check"></i> Supervisor: {{ professor.cref_supervisor.nome_prof }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% empty %}
+<div class="card" style="text-align: center; padding: 2.5rem; color: #999;">
+    <i class="ti ti-school-off" style="font-size: 40px; display: block; margin-bottom: 0.75rem;"></i>
+    Nenhum professor encontrado.
+</div>
+{% endfor %}
+
+{% endblock %}
