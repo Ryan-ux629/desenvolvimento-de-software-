@@ -1,39 +1,78 @@
-<h1>Detalhes do Aluno</h1>
+{% extends 'fitlife/base.html' %}
 
-<h2>{{ aluno.nome_aluno }}</h2>
+{% block title %}{{ aluno.nome_aluno }} — FitLife{% endblock %}
+{% block topbar_title %}Detalhes do Aluno{% endblock %}
+{% block nav_alunos %}active{% endblock %}
 
-<p>
-    <strong>CPF:</strong>
-    {{ aluno.cpf }}
-</p>
+{% block content %}
 
-<p>
-    <strong>Data de Nascimento:</strong>
-    {{ aluno.data_nascimento }}
-</p>
+<div class="page-header">
+    <h1 class="page-title">Detalhes do Aluno</h1>
+    <a href="{% url 'listar_alunos' %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
 
-<p>
-    <strong>Endereço:</strong>
-    {{ aluno.endereco_aluno }}
-</p>
+<div class="card" style="max-width: 680px;">
 
-<p>
-    <strong>Telefone:</strong>
-    {{ aluno.telefone_aluno }}
-</p>
+    <!-- Cabeçalho com avatar -->
+    <div class="detail-head">
+        <div class="avatar-circle av-pink" style="width: 56px; height: 56px; font-size: 20px;">
+            {{ aluno.nome_aluno|slice:':1'|upper }}
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -0.3px;">{{ aluno.nome_aluno }}</div>
+            <div style="font-size: 12.5px; color: var(--ink-3); margin-top: 2px;">CPF: {{ aluno.cpf }}</div>
+        </div>
+        {% if aluno.restricoes %}
+        <span class="badge badge-warning"><i class="ti ti-heart-rate-monitor"></i> Restrições</span>
+        {% else %}
+        <span class="badge badge-success"><i class="ti ti-circle-check"></i> Sem restrições</span>
+        {% endif %}
+    </div>
 
-<p>
-    <strong>E-mail:</strong>
-    {{ aluno.e_mail }}
-</p>
+    <!-- Dados em grade -->
+    <div class="detail-grid" style="margin-bottom: 1.25rem;">
 
-{% if aluno.restricoes %}
-<p>
-    <strong>Restrições Médicas:</strong>
-    {{ aluno.restricoes }}
-</p>
-{% endif %}
+        <div>
+            <div class="field-label">Data de Nascimento</div>
+            <div class="field-value">{{ aluno.data_nascimento }}</div>
+        </div>
 
-<a href="{% url 'editar_aluno' aluno.cpf %}">Editar</a>
-<a href="{% url 'excluir_aluno' aluno.cpf %}">Excluir</a>
-<a href="{% url 'listar_alunos' %}">Voltar</a>
+        <div>
+            <div class="field-label">Telefone</div>
+            <div class="field-value">{{ aluno.telefone_aluno }}</div>
+        </div>
+
+        <div class="span-2">
+            <div class="field-label">E-mail</div>
+            <div class="field-value">{{ aluno.e_mail }}</div>
+        </div>
+
+        <div class="span-2">
+            <div class="field-label">Endereço</div>
+            <div class="field-value">{{ aluno.endereco_aluno }}</div>
+        </div>
+
+        {% if aluno.restricoes %}
+        <div class="span-2">
+            <div class="field-label">Restrições Médicas</div>
+            <div class="field-value">{{ aluno.restricoes }}</div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Botões -->
+    <div class="form-actions">
+        <a href="{% url 'editar_aluno' aluno.cpf %}" class="btn-edit" style="padding: 8px 16px; font-size: 13px;">
+            <i class="ti ti-edit"></i> Editar
+        </a>
+        <a href="{% url 'excluir_aluno' aluno.cpf %}" class="btn-danger" style="padding: 8px 16px; font-size: 13px;">
+            <i class="ti ti-trash"></i> Excluir
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}
