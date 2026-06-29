@@ -1,12 +1,74 @@
-<h1>Confirmar Exclusão</h1>
+{% extends 'fitlife/base.html' %}
 
-<p>Tem certeza que deseja excluir
-   "{{ aluno.nome_aluno }}"?</p>
+{% block title %}Excluir Turma — FitLife{% endblock %}
+{% block topbar_title %}Excluir Turma{% endblock %}
+{% block nav_turmas %}active{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Sim, excluir</button>
-</form>
+{% block content %}
 
-<br>
-<a href="{% url 'listar_alunos' %}">Cancelar</a>
+<div class="page-header">
+    <h1 class="page-title">Confirmar Exclusão</h1>
+    <a href="{% url 'listar_turmas' %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="card" style="max-width: 480px;">
+
+    <!-- Ícone de alerta -->
+    <div style="text-align: center; margin-bottom: 1.25rem;">
+        <div style="
+            width: 60px; height: 60px; border-radius: 50%;
+            background: #ffebee; color: #c62828;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 0.75rem;
+            font-size: 28px;
+        ">
+            <i class="ti ti-trash"></i>
+        </div>
+        <h2 style="font-size: 16px; font-weight: 600; color: #1a1a2e; margin-bottom: 0.5rem;">
+            Excluir turma?
+        </h2>
+        <p style="font-size: 13.5px; color: #666;">
+            Tem certeza que deseja excluir a
+            <strong style="color: #1a1a2e;">Turma #{{ turma.cod_turma }} — {{ turma.cod_modalidade.nome_mod }}</strong>?
+        </p>
+        <p style="font-size: 12px; color: #999; margin-top: 6px;">
+            Esta ação não poderá ser desfeita.
+        </p>
+    </div>
+
+    <!-- Dados da turma -->
+    <div style="background: #f9f9fb; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 13px; color: #555;">
+        <div style="margin-bottom: 4px;"><strong>Modalidade:</strong> {{ turma.cod_modalidade.nome_mod }}</div>
+        <div style="margin-bottom: 4px;"><strong>Professor:</strong> {{ turma.cref_professor.nome_prof }}</div>
+        <div style="margin-bottom: 4px;"><strong>Unidade:</strong> {{ turma.cod_unidade }}</div>
+        <div><strong>Alunos inscritos:</strong> {{ turma.inscricoes.count }}/{{ turma.capacidade }}</div>
+    </div>
+
+    <!-- Aviso se houver inscritos -->
+    {% if turma.inscricoes.count > 0 %}
+    <div style="background: #fff3e0; border-left: 3px solid #e65100; border-radius: 0 8px 8px 0; padding: 0.65rem 1rem; margin-bottom: 1.25rem; font-size: 12px; color: #e65100;">
+        <i class="ti ti-alert-triangle" style="vertical-align: -2px;"></i>
+        Esta turma possui <strong>{{ turma.inscricoes.count }} aluno{{ turma.inscricoes.count|pluralize }} inscrito{{ turma.inscricoes.count|pluralize }}</strong>. Todas as inscrições serão removidas.
+    </div>
+    {% endif %}
+
+    <!-- Botões -->
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn-danger" style="
+                background: #c62828; color: #fff; border: none;
+                padding: 8px 20px; border-radius: 8px; font-size: 13.5px;
+                cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+            ">
+                <i class="ti ti-trash"></i> Sim, excluir
+            </button>
+            <a href="{% url 'listar_turmas' %}" class="btn-secondary">Cancelar</a>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}
