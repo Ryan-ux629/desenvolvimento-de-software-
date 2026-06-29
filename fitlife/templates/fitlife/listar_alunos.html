@@ -1,55 +1,91 @@
-<h1>Lista de Alunos</h1>
+{% extends 'fitlife/base.html' %}
 
-<a href="{% url 'cadastrar_aluno' %}">Novo aluno</a>
+{% block title %}Alunos — FitLife{% endblock %}
+{% block topbar_title %}Lista de Alunos{% endblock %}
+{% block nav_alunos %}active{% endblock %}
 
-<hr>
+{% block content %}
 
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Alunos</h1>
+        <div class="page-subtitle">Gerencie os alunos matriculados na academia</div>
+    </div>
+    <a href="{% url 'cadastrar_aluno' %}" class="btn-primary">
+        <i class="ti ti-user-plus"></i> Novo aluno
+    </a>
+</div>
+
+<!-- FILTROS -->
 <form method="get">
-    <input
-        type="text"
-        name="busca"
-        placeholder="Buscar por nome"
-        value="{{ busca|default:'' }}"
-    >
-
-    <select name="ordem">
-        <option value="nome_az" {% if ordem == 'nome_az' or not ordem %}selected{% endif %}>
-            Nome A-Z
-        </option>
-        <option value="nome_za" {% if ordem == 'nome_za' %}selected{% endif %}>
-            Nome Z-A
-        </option>
-        <option value="nascimento" {% if ordem == 'nascimento' %}selected{% endif %}>
-            Data de Nascimento
-        </option>
-    </select>
-
-    <button type="submit">Aplicar</button>
+    <div class="filter-bar">
+        <input
+            type="text"
+            name="busca"
+            placeholder="Buscar por nome..."
+            value="{{ busca|default:'' }}"
+        >
+        <select name="ordem">
+            <option value="nome_az" {% if ordem == 'nome_az' or not ordem %}selected{% endif %}>Nome A-Z</option>
+            <option value="nome_za" {% if ordem == 'nome_za' %}selected{% endif %}>Nome Z-A</option>
+            <option value="nascimento" {% if ordem == 'nascimento' %}selected{% endif %}>Data de Nascimento</option>
+        </select>
+        <button type="submit" class="btn-primary">
+            <i class="ti ti-filter"></i> Aplicar
+        </button>
+        <a href="{% url 'listar_alunos' %}" class="btn-secondary">Limpar</a>
+    </div>
 </form>
 
-<a href="{% url 'listar_alunos' %}">Limpar filtros</a>
+<!-- CONTAGEM -->
+<p class="result-count">
+    {{ alunos.count }} aluno{{ alunos.count|pluralize }} encontrado{{ alunos.count|pluralize }}
+</p>
 
-<hr>
-
+<!-- LISTA -->
 {% for aluno in alunos %}
-    <h2>{{ aluno.nome_aluno }}</h2>
+<div class="row-card">
 
-    <p>CPF: {{ aluno.cpf }}</p>
-    <p>Data de Nascimento: {{ aluno.data_nascimento }}</p>
-    <p>Telefone: {{ aluno.telefone_aluno }}</p>
-    <p>E-mail: {{ aluno.e_mail }}</p>
-    <p>Endereço: {{ aluno.endereco_aluno }}</p>
+    <div class="avatar-circle av-pink">
+        {{ aluno.nome_aluno|slice:':1'|upper }}
+    </div>
 
-    {% if aluno.restricoes %}
-        <p>Restrições médicas: {{ aluno.restricoes }}</p>
-    {% endif %}
+    <div style="flex: 1; min-width: 0;">
+        <div class="row-title">{{ aluno.nome_aluno }}</div>
+        <div class="row-meta">
+            <span><i class="ti ti-id"></i> CPF: {{ aluno.cpf }}</span>
+            <span><i class="ti ti-phone"></i> {{ aluno.telefone_aluno }}</span>
+            <span><i class="ti ti-mail"></i> {{ aluno.e_mail }}</span>
+        </div>
+        {% if aluno.restricoes %}
+        <div style="margin-top: 6px;">
+            <span class="badge badge-warning"><i class="ti ti-heart-rate-monitor"></i> Restrições médicas</span>
+        </div>
+        {% endif %}
+    </div>
 
-    <a href="{% url 'detalhe_aluno' aluno.cpf %}">Ver detalhes</a>
-    <a href="{% url 'editar_aluno' aluno.cpf %}">Editar</a>
-    <a href="{% url 'excluir_aluno' aluno.cpf %}">Excluir</a>
+    <div class="row-actions">
+        <a href="{% url 'detalhe_aluno' aluno.cpf %}" class="btn-edit">
+            <i class="ti ti-eye"></i> Ver
+        </a>
+        <a href="{% url 'editar_aluno' aluno.cpf %}" class="btn-edit">
+            <i class="ti ti-edit"></i> Editar
+        </a>
+        <a href="{% url 'excluir_aluno' aluno.cpf %}" class="btn-danger">
+            <i class="ti ti-trash"></i> Excluir
+        </a>
+    </div>
 
-    <hr>
+</div>
 {% empty %}
-    <p>Nenhum aluno encontrado.</p>
+<div class="empty-state">
+    <i class="ti ti-users-off big"></i>
+    Nenhum aluno encontrado.
+    <br><br>
+    <a href="{% url 'cadastrar_aluno' %}" class="btn-primary" style="display: inline-flex;">
+        <i class="ti ti-user-plus"></i> Cadastrar primeiro aluno
+    </a>
+</div>
 {% endfor %}
 
+{% endblock %}
