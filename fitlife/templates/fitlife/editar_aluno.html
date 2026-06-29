@@ -1,37 +1,73 @@
-<h1>Editar Aluno</h1>
+{% extends 'fitlife/base.html' %}
 
-<form method="post">
-    {% csrf_token %}
+{% block title %}Editar Aluno — FitLife{% endblock %}
+{% block topbar_title %}Editar Aluno{% endblock %}
+{% block nav_alunos %}active{% endblock %}
 
-    <label for="cpf">CPF:</label><br>
-    <input type="text" id="cpf" name="cpf"
-           value="{{ aluno.cpf }}" maxlength="11" readonly><br><br>
+{% block content %}
 
-    <label for="nome_aluno">Nome Completo:</label><br>
-    <input type="text" id="nome_aluno" name="nome_aluno"
-           value="{{ aluno.nome_aluno }}" maxlength="150" required><br><br>
+<div class="page-header">
+    <h1 class="page-title">Editar Aluno</h1>
+    <a href="{% url 'listar_alunos' %}" class="btn-secondary">
+        <i class="ti ti-arrow-left"></i> Voltar
+    </a>
+</div>
 
-    <label for="data_nascimento">Data de Nascimento:</label><br>
-    <input type="date" id="data_nascimento" name="data_nascimento"
-           value="{{ aluno.data_nascimento|date:'Y-m-d' }}" required><br><br>
+<div class="card" style="max-width: 680px;">
+    <form method="post">
+        {% csrf_token %}
 
-    <label for="endereco_aluno">Endereço:</label><br>
-    <input type="text" id="endereco_aluno" name="endereco_aluno"
-           value="{{ aluno.endereco_aluno }}" maxlength="255" required><br><br>
+        <!-- CPF (readonly) + Data de Nascimento -->
+        <div class="form-row" style="margin-bottom: 1.1rem;">
+            <div>
+                <label for="cpf" class="form-label">CPF <span class="hint">(não editável)</span></label>
+                <input type="text" id="cpf" name="cpf" class="form-input" value="{{ aluno.cpf }}" maxlength="11" readonly>
+            </div>
+            <div>
+                <label for="data_nascimento" class="form-label">Data de Nascimento <span class="req">*</span></label>
+                <input type="date" id="data_nascimento" name="data_nascimento" class="form-input" value="{{ aluno.data_nascimento|date:'Y-m-d' }}" required>
+            </div>
+        </div>
 
-    <label for="telefone_aluno">Telefone:</label><br>
-    <input type="text" id="telefone_aluno" name="telefone_aluno"
-           value="{{ aluno.telefone_aluno }}" maxlength="20" required><br><br>
+        <!-- Nome -->
+        <div class="form-group">
+            <label for="nome_aluno" class="form-label">Nome Completo <span class="req">*</span></label>
+            <input type="text" id="nome_aluno" name="nome_aluno" class="form-input" value="{{ aluno.nome_aluno }}" maxlength="150" required>
+        </div>
 
-    <label for="e_mail">E-mail:</label><br>
-    <input type="email" id="e_mail" name="e_mail"
-           value="{{ aluno.e_mail }}" maxlength="150" required><br><br>
+        <!-- Telefone + E-mail -->
+        <div class="form-row" style="margin-bottom: 1.1rem;">
+            <div>
+                <label for="telefone_aluno" class="form-label">Telefone <span class="req">*</span></label>
+                <input type="text" id="telefone_aluno" name="telefone_aluno" class="form-input" value="{{ aluno.telefone_aluno }}" maxlength="20" required>
+            </div>
+            <div>
+                <label for="e_mail" class="form-label">E-mail <span class="req">*</span></label>
+                <input type="email" id="e_mail" name="e_mail" class="form-input" value="{{ aluno.e_mail }}" maxlength="150" required>
+            </div>
+        </div>
 
-    <label for="restricoes">Restrições Médicas:</label><br>
-    <textarea id="restricoes" name="restricoes">{{ aluno.restricoes }}</textarea><br><br>
+        <!-- Endereço -->
+        <div class="form-group">
+            <label for="endereco_aluno" class="form-label">Endereço <span class="req">*</span></label>
+            <input type="text" id="endereco_aluno" name="endereco_aluno" class="form-input" value="{{ aluno.endereco_aluno }}" maxlength="255" required>
+        </div>
 
-    <button type="submit">Salvar alterações</button>
-</form>
+        <!-- Restrições -->
+        <div class="form-group">
+            <label for="restricoes" class="form-label">Restrições Médicas <span class="hint">(opcional)</span></label>
+            <textarea id="restricoes" name="restricoes" class="form-textarea">{{ aluno.restricoes }}</textarea>
+        </div>
 
-<br>
-<a href="{% url 'listar_alunos' %}">Voltar</a>
+        <!-- Botões -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="ti ti-check"></i> Salvar alterações
+            </button>
+            <a href="{% url 'listar_alunos' %}" class="btn-secondary">Cancelar</a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
