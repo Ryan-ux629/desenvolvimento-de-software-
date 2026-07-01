@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Negado — FitLife</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background: #f0f0f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .icon {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: #ffebee;
+            color: #c62828;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 1.25rem;
+        }
+        .code {
+            font-size: 48px;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 0.5rem;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 0.75rem;
+        }
+        .desc {
+            font-size: 13.5px;
+            color: #888;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .btn-primary {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 8px;
+        }
+        .btn-primary:hover { background: #c73652; }
+        .btn-secondary {
+            background: #f0f0f5;
+            color: #1a1a2e;
+            border: 0.5px solid #ddd;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-secondary:hover { background: #e0e0e8; }
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 2rem;
+        }
+        .logo span { color: #1a1a2e; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">Fit<span>Life</span></div>
+
+    <div class="icon">
+        <i class="ti ti-lock"></i>
+    </div>
+
+    <div class="code">403</div>
+    <div class="title">Acesso Negado</div>
+    <div class="desc">
+        Você não tem permissão para acessar esta página.<br>
+        Entre em contato com o administrador do sistema caso precise de acesso.
+    </div>
+
+    <div>
+        <a href="/" class="btn-primary">
+            <i class="ti ti-home"></i> Ir para o Dashboard
+        </a>
+        <a href="javascript:history.back()" class="btn-secondary">
+            <i class="ti ti-arrow-left"></i> Voltar
+        </a>
+    </div>
+</div>
+</body>
+</html>
